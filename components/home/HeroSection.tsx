@@ -2,83 +2,110 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { ArrowLeft, Play } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { DashboardMockup } from "./DashboardMockup";
-import { fadeUp, staggerContainer, cardVariant } from "@/lib/animations";
+import { fadeUp, staggerContainer } from "@/lib/animations";
 
 export function HeroSection() {
   return (
-    <section className="relative overflow-hidden bg-gradient-to-b from-[#1B4F72]/5 via-white to-white pt-32 pb-20">
-      {/* Dot pattern */}
+    <section className="relative overflow-hidden bg-background pt-[120px] pb-[120px]">
+      {/* Grid pattern */}
       <div
-        className="absolute inset-0 opacity-[0.03]"
+        aria-hidden
+        className="pointer-events-none absolute inset-0 opacity-[0.35]"
         style={{
-          backgroundImage: `radial-gradient(circle at 1px 1px, #1B4F72 1px, transparent 0)`,
-          backgroundSize: "32px 32px",
+          backgroundImage: `
+            linear-gradient(to right, color-mix(in oklch, var(--border) 60%, transparent) 1px, transparent 1px),
+            linear-gradient(to bottom, color-mix(in oklch, var(--border) 60%, transparent) 1px, transparent 1px)
+          `,
+          backgroundSize: "72px 72px",
+          maskImage:
+            "radial-gradient(ellipse 90% 70% at 50% 0%, black 20%, transparent 75%)",
         }}
       />
 
-      <div className="container mx-auto px-6 relative">
+      {/* Radial gradient */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_80%_55%_at_50%_-15%,rgba(27,79,114,0.1),transparent_65%)]"
+      />
+
+      {/* Subtle glow behind hero content */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute left-1/2 top-32 h-[420px] w-[min(900px,90vw)] -translate-x-1/2 rounded-full bg-brand-primary/[0.06] blur-3xl"
+      />
+
+      <div className="relative mx-auto max-w-[1200px] px-6 text-center">
         <motion.div
           variants={staggerContainer}
           initial="hidden"
           animate="visible"
-          className="grid lg:grid-cols-2 gap-12 items-center"
+          className="flex flex-col items-center"
         >
-          {/* Text */}
-          <motion.div variants={fadeUp} className="order-2 lg:order-1">
-            <motion.div variants={cardVariant}>
-              <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-brand-primary/10 text-brand-primary text-xs font-semibold mb-6">
-                <span className="w-1.5 h-1.5 rounded-full bg-brand-accent-light" />
-                پورتال ویژه بنکداران مجاز برنا
+          {/* Badge */}
+          <motion.div variants={fadeUp} className="mb-6">
+            <span className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-muted/60 px-4 py-1.5 text-xs font-medium text-foreground backdrop-blur-sm">
+              <span className="relative flex h-2 w-2">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand-accent-light opacity-60" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-brand-accent-light" />
               </span>
-            </motion.div>
-
-            <motion.h1 variants={fadeUp} className="text-4xl lg:text-5xl font-extrabold text-slate-900 leading-snug mb-5">
-              پورتال هوشمند
-              <br />
-              <span className="text-brand-primary">بنکداران برنا</span>
-            </motion.h1>
-
-            <motion.p variants={fadeUp} className="text-lg text-slate-500 leading-relaxed mb-8 max-w-xl">
-              مدیریت سفارش، فاکتور، و ارتباط با برنا — همه در یک پلتفرم یکپارچه
-            </motion.p>
-
-            <motion.div variants={fadeUp} className="flex flex-wrap gap-3">
-              <Link
-                href="#"
-                className="inline-flex items-center gap-2 bg-brand-primary hover:bg-brand-light text-white px-6 py-3 rounded-lg font-semibold text-base transition-colors"
-              >
-                ورود به پورتال
-                <ArrowLeft className="h-4 w-4" />
-              </Link>
-              <Link
-                href="/features"
-                className="inline-flex items-center gap-2 border border-slate-200 text-slate-700 hover:bg-slate-50 px-6 py-3 rounded-lg font-semibold text-base transition-colors"
-              >
-                <Play className="h-4 w-4 text-brand-primary" />
-                مشاهده امکانات
-              </Link>
-            </motion.div>
-
-            <motion.div variants={fadeUp} className="flex items-center gap-6 mt-10 pt-8 border-t border-slate-100">
-              {[
-                { value: "+۵۰۰", label: "بنکدار فعال" },
-                { value: "+۱۲۰", label: "محصول متنوع" },
-                { value: "۳۰ سال", label: "سابقه فعالیت" },
-              ].map((stat) => (
-                <div key={stat.label}>
-                  <div className="text-2xl font-extrabold text-slate-900">{stat.value}</div>
-                  <div className="text-xs text-slate-500 mt-0.5">{stat.label}</div>
-                </div>
-              ))}
-            </motion.div>
+              پورتال اختصاصی مشتریان برنا پلاستیک
+            </span>
           </motion.div>
 
-          {/* Mockup */}
-          <motion.div variants={cardVariant} className="order-1 lg:order-2">
-            <div className="relative">
-              <div className="absolute -inset-4 bg-gradient-to-br from-brand-primary/10 to-brand-accent/10 rounded-2xl blur-2xl" />
+          {/* Heading */}
+          <motion.h1
+            variants={fadeUp}
+            className="mb-6 text-4xl font-bold leading-[1.1] tracking-tight text-foreground sm:text-5xl lg:text-6xl xl:text-7xl"
+          >
+            پورتال هوشمند
+            <br />
+            <span className="text-brand-primary">بنکداران برنا</span>
+          </motion.h1>
+
+          {/* Description */}
+          <motion.p
+            variants={fadeUp}
+            className="mb-8 max-w-[700px] text-lg leading-relaxed text-muted-foreground"
+          >
+            مدیریت سفارشات، فاکتورها، باشگاه مشتریان و ارتباط مستقیم با برنا در
+            یک پلتفرم یکپارچه.
+          </motion.p>
+
+          {/* CTA Buttons */}
+          <motion.div
+            variants={fadeUp}
+            className="flex flex-wrap items-center justify-center gap-4"
+          >
+            <Link
+              href="#"
+              className="inline-flex items-center gap-2 rounded-lg bg-brand-primary px-6 py-3 text-base font-semibold text-white transition-all duration-200 hover:scale-[1.02] hover:bg-brand-light hover:shadow-lg active:scale-[0.98]"
+            >
+              ورود به پورتال
+              <ArrowLeft className="h-4 w-4" />
+            </Link>
+            <Link
+              href="/features"
+              className="inline-flex items-center gap-2 rounded-lg border border-border bg-background px-6 py-3 text-base font-semibold text-foreground transition-all duration-200 hover:scale-[1.02] hover:bg-muted hover:shadow-md active:scale-[0.98]"
+            >
+              مشاهده امکانات
+            </Link>
+          </motion.div>
+
+          {/* Dashboard Preview */}
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-60px" }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="group relative mt-20 w-full max-w-[1100px]"
+          >
+            <div
+              aria-hidden
+              className="absolute -inset-6 rounded-[2rem] bg-gradient-to-b from-brand-primary/10 via-brand-primary/5 to-transparent opacity-70 blur-2xl"
+            />
+            <div className="relative transition-transform duration-300 ease-out group-hover:scale-[1.01]">
               <DashboardMockup />
             </div>
           </motion.div>

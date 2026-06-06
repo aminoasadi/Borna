@@ -26,7 +26,7 @@ const rows = [
 
 export function DashboardMockup() {
   return (
-    <div className="rounded-xl overflow-hidden border border-slate-200 shadow-2xl bg-white">
+    <div className="overflow-hidden rounded-3xl border border-slate-200/80 bg-white/90 shadow-xl backdrop-blur-sm">
       {/* Browser chrome */}
       <div className="h-9 bg-slate-100 border-b border-slate-200 flex items-center px-4 gap-2">
         <div className="flex gap-1.5">
@@ -42,7 +42,7 @@ export function DashboardMockup() {
       </div>
 
       {/* App layout */}
-      <div className="flex h-[340px]" dir="rtl">
+      <div className="flex h-[420px] sm:h-[480px] lg:h-[540px]" dir="rtl">
         {/* Sidebar — white, neutral */}
         <aside className="w-44 border-l border-slate-100 bg-white flex flex-col shrink-0">
           <div className="p-3 border-b border-slate-100">
@@ -90,13 +90,13 @@ export function DashboardMockup() {
               <div className="h-5 px-2 rounded text-[9px] font-medium bg-blue-700 text-white flex items-center">+ سفارش جدید</div>
             </div>
           </div>
-          <div className="p-3">
+          <div className="p-4">
             {/* Stats */}
-            <div className="grid grid-cols-4 gap-2 mb-3">
+            <div className="grid grid-cols-4 gap-2.5 mb-4">
               {stats.map((s) => (
-                <div key={s.label} className="bg-white rounded-lg border border-slate-100 p-2">
-                  <div className="text-[8px] text-slate-400 mb-1">{s.label}</div>
-                  <div className="text-[14px] font-bold text-slate-800 leading-none">{s.value}</div>
+                <div key={s.label} className="bg-white rounded-lg border border-slate-100 p-2.5">
+                  <div className="text-[8px] text-slate-400 mb-1.5">{s.label}</div>
+                  <div className="text-[15px] font-bold text-slate-800 leading-none">{s.value}</div>
                   <div className={`text-[8px] mt-1 ${s.up ? "text-green-600" : "text-slate-400"}`}>{s.sub}</div>
                 </div>
               ))}
@@ -118,10 +118,10 @@ export function DashboardMockup() {
                 <tbody>
                   {rows.map((row) => (
                     <tr key={row.num} className="border-t border-slate-50">
-                      <td className="px-3 py-1.5 text-[8px] font-mono text-slate-500">{row.num}</td>
-                      <td className="px-3 py-1.5 text-[8px] text-slate-400">{row.date}</td>
-                      <td className="px-3 py-1.5 text-[8px] text-slate-700">{row.item}</td>
-                      <td className="px-3 py-1.5">
+                      <td className="px-3 py-2 text-[8px] font-mono text-slate-500">{row.num}</td>
+                      <td className="px-3 py-2 text-[8px] text-slate-400">{row.date}</td>
+                      <td className="px-3 py-2 text-[8px] text-slate-700">{row.item}</td>
+                      <td className="px-3 py-2">
                         <span className={`text-[8px] font-medium px-1.5 py-0.5 rounded ${row.statusClass}`}>
                           {row.status}
                         </span>
