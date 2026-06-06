@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>پورتال برنا — Enterprise</title>
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --sidebar-w: 220px;
+      --topbar-h:  52px;
+
+      /* neutrals */
+      --bg:        #F5F6F8;
+      --surface:   #FFFFFF;
+      --border:    #E8EAED;
+      --border-2:  #F0F2F5;
+
+      /* text */
+      --t1: #111318;
+      --t2: #5F6368;
+      --t3: #9AA0A6;
+
+      /* accent (used sparingly) */
+      --indigo:  #4F46E5;
+      --indigo-s:#EEF2FF;
+      --green:   #16A34A;
+      --green-s: #F0FDF4;
+      --amber:   #B45309;
+      --amber-s: #FFFBEB;
+      --red:     #DC2626;
+      --red-s:   #FEF2F2;
+    }
+
+    html, body { height: 100%; }
+
+    body {
+      font-family: 'Vazirmatn', -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--t1);
+      display: flex;
+      direction: rtl;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    /* ══════════════════════════════════════════
+       SIDEBAR
+    ══════════════════════════════════════════ */
+    .sidebar {
+      width: var(--sidebar-w);
+      background: var(--surface);
+      border-left: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+      position: fixed;
+      top: 0; right: 0; bottom: 0;
+      overflow-y: auto;
+      z-index: 20;
+    }
+
+    .sidebar-top {
+      padding: 16px 14px 12px;
+      border-bottom: 1px solid var(--border-2);
+    }
+
+    .workspace {
+      display: flex; align-items: center; gap: 9px;
+      padding: 7px 8px; border-radius: 7px;
+      cursor: pointer; transition: background .12s;
+    }
+    .workspace:hover { background: var(--bg); }
+
+    .ws-icon {
+      width: 26px; height: 26px; border-radius: 6px;
+      background: var(--t1);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .ws-icon svg { color: #fff; }
+
+    .ws-label { font-size: 13px; font-weight: 600; color: var(--t1); }
+    .ws-sub   { font-size: 11px; color: var(--t3); }
+
+    .chevron { margin-right: auto; color: var(--t3); }
+
+    /* nav */
+    .nav-group { padding: 8px 10px; }
+    .nav-section-label {
+      font-size: 10px; font-weight: 600; letter-spacing: .6px;
+      color: var(--t3); text-transform: uppercase;
+      padding: 0 8px; margin-bottom: 4px; margin-top: 8px;
+    }
+
+    .nav-item {
+      display: flex; align-items: center; gap: 8px;
+      padding: 7px 10px; border-radius: 6px;
+      cursor: pointer; color: var(--t2);
+      font-size: 13px; font-weight: 500;
+      transition: background .1s, color .1s;
+      margin-bottom: 1px;
+    }
+    .nav-item:hover  { background: var(--bg); color: var(--t1); }
+    .nav-item.active { background: var(--indigo-s); color: var(--indigo); }
+    .nav-item.active svg { stroke: var(--indigo); }
+
+    .nav-item svg { flex-shrink: 0; }
+
+    .nav-count {
+      margin-right: auto;
+      font-size: 11px; font-weight: 600;
+      background: var(--bg); color: var(--t2);
+      padding: 1px 7px; border-radius: 20px;
+      border: 1px solid var(--border);
+    }
+    .nav-item.active .nav-count {
+      background: var(--indigo); color: #fff; border-color: var(--indigo);
+    }
+
+    /* sidebar footer */
+    .sidebar-footer {
+      margin-top: auto;
+      padding: 10px 10px 14px;
+      border-top: 1px solid var(--border-2);
+    }
+    .user-row {
+      display: flex; align-items: center; gap: 9px;
+      padding: 8px 10px; border-radius: 7px;
+      cursor: pointer; transition: background .12s;
+    }
+    .user-row:hover { background: var(--bg); }
+    .avatar {
+      width: 28px; height: 28px; border-radius: 50%;
+      background: var(--indigo-s);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 700; color: var(--indigo);
+      flex-shrink: 0;
+    }
+    .user-name  { font-size: 12px; font-weight: 600; color: var(--t1); }
+    .user-role  { font-size: 11px; color: var(--t3); }
+
+    /* ══════════════════════════════════════════
+       MAIN
+    ══════════════════════════════════════════ */
+    .main {
+      margin-right: var(--sidebar-w);
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    /* topbar */
+    .topbar {
+      height: var(--topbar-h);
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 0 24px;
+      display: flex; align-items: center; justify-content: space-between;
+      position: sticky; top: 0; z-index: 10;
+    }
+
+    .topbar-right { display: flex; align-items: center; gap: 6px; }
+
+    .page-title { font-size: 14px; font-weight: 600; color: var(--t1); }
+    .breadcrumb { display: flex; align-items: center; gap: 5px; }
+    .breadcrumb span { font-size: 12px; color: var(--t3); }
+    .breadcrumb b    { font-size: 12px; color: var(--t1); }
+
+    .topbar-left { display: flex; align-items: center; gap: 8px; }
+
+    .tb-btn {
+      height: 30px; padding: 0 12px;
+      border-radius: 6px; border: 1px solid var(--border);
+      background: var(--surface); color: var(--t2);
+      font-family: 'Vazirmatn', sans-serif;
+      font-size: 12px; font-weight: 500;
+      cursor: pointer; display: flex; align-items: center; gap: 6px;
+      transition: background .1s;
+    }
+    .tb-btn:hover { background: var(--bg); }
+    .tb-btn.primary {
+      background: var(--indigo); color: #fff;
+      border-color: var(--indigo);
+    }
+    .tb-btn.primary:hover { background: #4338CA; }
+
+    .icon-btn {
+      width: 30px; height: 30px;
+      border-radius: 6px; border: 1px solid var(--border);
+      background: var(--surface);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; position: relative; transition: background .1s;
+    }
+    .icon-btn:hover { background: var(--bg); }
+    .notif-dot {
+      position: absolute; top: 5px; right: 5px;
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--red); border: 1.5px solid var(--surface);
+    }
+
+    /* divider */
+    .tb-div { width: 1px; height: 18px; background: var(--border); margin: 0 4px; }
+
+    /* ══════════════════════════════════════════
+       CONTENT
+    ══════════════════════════════════════════ */
+    .content { flex: 1; padding: 24px; }
+
+    .panel { display: none; }
+    .panel.active { display: block; }
+
+    /* metric row */
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    .metric {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px 18px;
+    }
+    .metric-label { font-size: 11px; color: var(--t3); margin-bottom: 10px; font-weight: 500; }
+    .metric-value { font-size: 24px; font-weight: 700; color: var(--t1); letter-spacing: -.5px; }
+    .metric-sub   { margin-top: 5px; font-size: 11px; display: flex; align-items: center; gap: 4px; }
+    .metric-sub.up   { color: var(--green); }
+    .metric-sub.down { color: var(--red); }
+    .metric-sub.muted { color: var(--t3); }
+
+    /* card */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 16px;
+    }
+    .card-head {
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--border-2);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .card-title { font-size: 13px; font-weight: 600; }
+    .card-action { font-size: 12px; color: var(--indigo); cursor: pointer; font-weight: 500; }
+
+    /* table */
+    table { width: 100%; border-collapse: collapse; }
+    th {
+      padding: 9px 18px; font-size: 11px; font-weight: 600;
+      color: var(--t3); text-align: right;
+      background: var(--bg); border-bottom: 1px solid var(--border);
+      letter-spacing: .3px;
+    }
+    td {
+      padding: 11px 18px; font-size: 12px;
+      border-bottom: 1px solid var(--border-2);
+      color: var(--t1);
+    }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: #FAFBFC; }
+
+    /* pill status */
+    .pill {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 2px 8px; border-radius: 4px;
+      font-size: 11px; font-weight: 600;
+    }
+    .pill-dot { width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
+    .pill.green  { color: var(--green);  background: var(--green-s); }
+    .pill.amber  { color: var(--amber);  background: var(--amber-s); }
+    .pill.indigo { color: var(--indigo); background: var(--indigo-s); }
+    .pill.red    { color: var(--red);    background: var(--red-s); }
+    .pill.gray   { color: var(--t2);     background: var(--bg); border: 1px solid var(--border); }
+
+    /* mini-button */
+    .mini-btn {
+      font-family: 'Vazirmatn', sans-serif;
+      font-size: 11px; font-weight: 600;
+      padding: 4px 10px; border-radius: 5px; cursor: pointer;
+      border: 1px solid var(--border); background: var(--surface); color: var(--t2);
+      transition: background .1s;
+    }
+    .mini-btn:hover { background: var(--bg); }
+    .mini-btn.accent { background: var(--indigo); color: #fff; border-color: var(--indigo); }
+
+    /* ── Chart ── */
+    .chart-wrap { padding: 16px 18px 12px; }
+    .chart-bars {
+      display: flex; align-items: flex-end; gap: 6px;
+      height: 140px;
+    }
+    .bar-col { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+    .bar-inner {
+      width: 100%; border-radius: 3px 3px 0 0;
+      background: var(--border);
+      transition: background .15s;
+    }
+    .bar-inner.active { background: var(--indigo); opacity: .85; }
+    .bar-inner.hi     { background: var(--indigo); }
+    .bar-inner:hover  { opacity: 1 !important; cursor: pointer; }
+    .bar-lbl { font-size: 9px; color: var(--t3); }
+
+    /* ── Club tiers ── */
+    .tier-row { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin-bottom: 16px; }
+    .tier-card {
+      border: 1px solid var(--border); border-radius: 10px;
+      padding: 18px 16px; background: var(--surface);
+    }
+    .tier-card.current { border-color: var(--indigo); background: var(--indigo-s); }
+    .tier-header { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+    .tier-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--border); }
+    .tier-dot.bronze { background: #CD7F32; }
+    .tier-dot.silver { background: #9E9E9E; }
+    .tier-dot.gold   { background: #F1C40F; }
+    .tier-name { font-size: 13px; font-weight: 700; }
+    .tier-range{ font-size: 11px; color: var(--t3); }
+    .tier-progress-bg { height: 4px; background: var(--border); border-radius: 2px; margin-top: 12px; }
+    .tier-progress-fill { height: 4px; border-radius: 2px; background: var(--indigo); }
+
+    .points-row {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 10px; padding: 20px 22px;
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 16px;
+    }
+    .pts-num { font-size: 32px; font-weight: 700; color: var(--t1); letter-spacing: -1px; }
+    .pts-lbl { font-size: 11px; color: var(--t3); margin-top: 2px; }
+    .pts-bar-wrap { flex: 1; margin: 0 40px; }
+    .pts-bar-bg { height: 6px; background: var(--border); border-radius: 3px; }
+    .pts-bar-fill { height: 6px; background: var(--indigo); border-radius: 3px; width: 68%; }
+    .pts-bar-labels { display: flex; justify-content: space-between; margin-top: 5px; font-size: 10px; color: var(--t3); }
+
+    /* ── Products ── */
+    .product-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; }
+    .product-card {
+      border: 1px solid var(--border); border-radius: 10px;
+      background: var(--surface); overflow: hidden; cursor: pointer;
+      transition: box-shadow .15s, border-color .15s;
+    }
+    .product-card:hover { box-shadow: 0 2px 12px rgba(0,0,0,.06); border-color: #D0D3D8; }
+    .product-thumb {
+      height: 90px; background: var(--bg);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 32px; border-bottom: 1px solid var(--border-2);
+    }
+    .product-body { padding: 12px 14px; }
+    .product-name  { font-size: 12px; font-weight: 600; margin-bottom: 3px; line-height: 1.4; }
+    .product-code  { font-size: 10px; color: var(--t3); margin-bottom: 8px; font-family: monospace; }
+    .product-foot  { display: flex; align-items: center; justify-content: space-between; }
+    .product-price { font-size: 13px; font-weight: 700; color: var(--t1); }
+
+    /* ── Invoice summary ── */
+    .inv-metrics { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin-bottom: 16px; }
+
+    /* ── Finance two-col ── */
+    .finance-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+
+    /* ── Misc ── */
+    .row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+    .section-title { font-size: 14px; font-weight: 700; }
+    .empty-label { font-size: 11px; color: var(--t3); }
+
+    input.search-box {
+      height: 30px; width: 200px; padding: 0 10px;
+      border-radius: 6px; border: 1px solid var(--border);
+      background: var(--bg); color: var(--t1);
+      font-family: 'Vazirmatn', sans-serif; font-size: 12px;
+      outline: none; direction: rtl;
+    }
+    input.search-box:focus { border-color: var(--indigo); background: #fff; }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════ SIDEBAR ══════════════ -->
+<aside class="sidebar">
+
+  <div class="sidebar-top">
+    <div class="workspace">
+      <div class="ws-icon">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5">
+          <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
+        </svg>
+      </div>
+      <div>
+        <div class="ws-label">برنا پلاستیک</div>
+        <div class="ws-sub">پورتال بنکداران</div>
+      </div>
+      <div class="chevron">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="6 9 12 15 18 9"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <div class="nav-group">
+    <div class="nav-section-label">فضای کار</div>
+
+    <div class="nav-item active" onclick="show('orders',this)">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/>
+        <rect x="9" y="3" width="6" height="4" rx="1"/>
+      </svg>
+      سفارشات
+      <span class="nav-count">۳</span>
+    </div>
+
+    <div class="nav-item" onclick="show('finance',this)">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <rect x="2" y="7" width="20" height="14" rx="2"/>
+        <path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16"/>
+      </svg>
+      مالی
+    </div>
+
+    <div class="nav-item" onclick="show('club',this)">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+      </svg>
+      باشگاه مشتریان
+    </div>
+
+    <div class="nav-item" onclick="show('invoices',this)">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+        <polyline points="14 2 14 8 20 8"/>
+        <line x1="16" y1="13" x2="8" y2="13"/>
+        <line x1="16" y1="17" x2="8" y2="17"/>
+      </svg>
+      فاکتورها
+    </div>
+
+    <div class="nav-item" onclick="show('products',this)">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
+        <line x1="3" y1="6" x2="21" y2="6"/>
+        <path d="M16 10a4 4 0 01-8 0"/>
+      </svg>
+      محصولات
+    </div>
+
+    <div class="nav-section-label" style="margin-top:16px;">پشتیبانی</div>
+
+    <div class="nav-item" onclick="show('orders',this)" style="opacity:.5; pointer-events:none;">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
+      </svg>
+      تیکت‌ها
+    </div>
+  </div>
+
+  <div class="sidebar-footer">
+    <div class="user-row">
+      <div class="avatar">م</div>
+      <div>
+        <div class="user-name">محمد رضایی</div>
+        <div class="user-role">بنکدار — تهران</div>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<!-- ══════════════ MAIN ══════════════ -->
+<div class="main">
+
+  <!-- Topbar -->
+  <header class="topbar">
+    <div class="topbar-right">
+      <div class="breadcrumb">
+        <span>برنا پلاستیک</span>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--t3)" stroke-width="2">
+          <polyline points="15 18 9 12 15 6"/>
+        </svg>
+        <b id="page-title">سفارشات</b>
+      </div>
+    </div>
+    <div class="topbar-left">
+      <div class="icon-btn">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--t2)" stroke-width="2">
+          <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+      </div>
+      <div class="icon-btn">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--t2)" stroke-width="2">
+          <path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/>
+        </svg>
+        <div class="notif-dot"></div>
+      </div>
+      <div class="tb-div"></div>
+      <div class="avatar" style="width:26px;height:26px;font-size:11px;cursor:pointer;">م</div>
+    </div>
+  </header>
+
+  <!-- Content -->
+  <div class="content">
+
+    <!-- ─── ORDERS ─── -->
+    <div id="panel-orders" class="panel active">
+      <div class="row">
+        <span class="section-title">سفارشات</span>
+        <div style="display:flex;gap:8px;">
+          <input class="search-box" placeholder="جستجوی سفارش..." />
+          <button class="tb-btn">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="12" y1="18" x2="12" y2="18"/>
+            </svg>
+            فیلتر
+          </button>
+          <button class="tb-btn primary">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+            </svg>
+            سفارش جدید
+          </button>
+        </div>
+      </div>
+
+      <div class="metrics">
+        <div class="metric">
+          <div class="metric-label">کل سفارشات</div>
+          <div class="metric-value">۱۴۷</div>
+          <div class="metric-sub up">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg>
+            ۱۲٪ این ماه
+          </div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">در حال پردازش</div>
+          <div class="metric-value">۳</div>
+          <div class="metric-sub muted">در انتظار تأیید</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">تحویل‌شده (۳۰ روز)</div>
+          <div class="metric-value">۲۱</div>
+          <div class="metric-sub up">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg>
+            ۵ سفارش بیشتر
+          </div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">نرخ تحویل به موقع</div>
+          <div class="metric-value">۹۶٪</div>
+          <div class="metric-sub up">بالاتر از میانگین</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <span class="card-title">سفارشات اخیر</span>
+          <span class="card-action">مشاهده همه →</span>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>شماره</th><th>تاریخ</th><th>اقلام</th><th>مبلغ</th><th>وضعیت</th><th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span style="font-family:monospace;font-size:11px;color:var(--t2);">#۱۰۰۴۷</span></td>
+              <td style="color:var(--t2);">۱۴۰۴/۰۳/۱۵</td>
+              <td>کیسه فریز × ۵۰۰</td>
+              <td style="font-weight:600;">۸۵٫۰۰۰٫۰۰۰</td>
+              <td><span class="pill indigo"><span class="pill-dot"></span>در حال پردازش</span></td>
+              <td><button class="mini-btn">جزئیات</button></td>
+            </tr>
+            <tr>
+              <td><span style="font-family:monospace;font-size:11px;color:var(--t2);">#۱۰۰۴۶</span></td>
+              <td style="color:var(--t2);">۱۴۰۴/۰۳/۱۰</td>
+              <td>کیسه زباله + سفره</td>
+              <td style="font-weight:600;">۱۲۰٫۵۰۰٫۰۰۰</td>
+              <td><span class="pill green"><span class="pill-dot"></span>تحویل شد</span></td>
+              <td><button class="mini-btn">جزئیات</button></td>
+            </tr>
+            <tr>
+              <td><span style="font-family:monospace;font-size:11px;color:var(--t2);">#۱۰۰۴۵</span></td>
+              <td style="color:var(--t2);">۱۴۰۴/۰۳/۰۵</td>
+              <td>سفره یکبارمصرف × ۳۰۰</td>
+              <td style="font-weight:600;">۴۵٫۰۰۰٫۰۰۰</td>
+              <td><span class="pill green"><span class="pill-dot"></span>تحویل شد</span></td>
+              <td><button class="mini-btn">جزئیات</button></td>
+            </tr>
+            <tr>
+              <td><span style="font-family:monospace;font-size:11px;color:var(--t2);">#۱۰۰۴۴</span></td>
+              <td style="color:var(--t2);">۱۴۰۴/۰۲/۲۸</td>
+              <td>کیسه فریز × ۱٬۰۰۰</td>
+              <td style="font-weight:600;">۱۶۵٫۰۰۰٫۰۰۰</td>
+              <td><span class="pill green"><span class="pill-dot"></span>تحویل شد</span></td>
+              <td><button class="mini-btn">جزئیات</button></td>
+            </tr>
+            <tr>
+              <td><span style="font-family:monospace;font-size:11px;color:var(--t2);">#۱۰۰۴۳</span></td>
+              <td style="color:var(--t2);">۱۴۰۴/۰۲/۲۰</td>
+              <td>کیسه زباله × ۱۵۰</td>
+              <td style="font-weight:600;">۳۲٫۰۰۰٫۰۰۰</td>
+              <td><span class="pill amber"><span class="pill-dot"></span>انتظار پرداخت</span></td>
+              <td><button class="mini-btn accent">پرداخت</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ─── FINANCE ─── -->
+    <div id="panel-finance" class="panel">
+      <div class="row">
+        <span class="section-title">گزارش مالی</span>
+        <div style="display:flex;gap:8px;">
+          <button class="tb-btn">دانلود صورت‌حساب</button>
+          <button class="tb-btn primary">تسویه حساب</button>
+        </div>
+      </div>
+
+      <div class="metrics">
+        <div class="metric">
+          <div class="metric-label">خرید ۱۲ ماه گذشته</div>
+          <div class="metric-value">۲.۴م</div>
+          <div class="metric-sub muted">میلیارد تومان</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">خرید این ماه</div>
+          <div class="metric-value">۱۶۵م</div>
+          <div class="metric-sub up">↑ ۸٪</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">پرداخت این ماه</div>
+          <div class="metric-value">۲۲۰م</div>
+          <div class="metric-sub up">مازاد بر خرید</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">بدهی جاری</div>
+          <div class="metric-value">۳۸۰م</div>
+          <div class="metric-sub muted">میلیون تومان</div>
+        </div>
+      </div>
+
+      <div class="finance-grid">
+        <div class="card" style="margin:0;">
+          <div class="card-head">
+            <span class="card-title">خرید ماهانه — ۱۴۰۴</span>
+          </div>
+          <div class="chart-wrap">
+            <div class="chart-bars">
+              <div class="bar-col"><div class="bar-inner" style="height:55%;"></div><div class="bar-lbl">فر</div></div>
+              <div class="bar-col"><div class="bar-inner" style="height:68%;"></div><div class="bar-lbl">ار</div></div>
+              <div class="bar-col"><div class="bar-inner" style="height:45%;"></div><div class="bar-lbl">خر</div></div>
+              <div class="bar-col"><div class="bar-inner hi" style="height:88%;"></div><div class="bar-lbl">تیر</div></div>
+              <div class="bar-col"><div class="bar-inner" style="height:62%;"></div><div class="bar-lbl">مر</div></div>
+              <div class="bar-col"><div class="bar-inner active" style="height:50%;"></div><div class="bar-lbl">شه</div></div>
+              <div class="bar-col"><div class="bar-inner" style="height:25%;opacity:.3;"></div><div class="bar-lbl">مه</div></div>
+              <div class="bar-col"><div class="bar-inner" style="height:18%;opacity:.3;"></div><div class="bar-lbl">آب</div></div>
+              <div class="bar-col"><div class="bar-inner" style="height:15%;opacity:.3;"></div><div class="bar-lbl">آذ</div></div>
+              <div class="bar-col"><div class="bar-inner" style="height:10%;opacity:.3;"></div><div class="bar-lbl">دی</div></div>
+              <div class="bar-col"><div class="bar-inner" style="height:8%;opacity:.3;"></div><div class="bar-lbl">به</div></div>
+              <div class="bar-col"><div class="bar-inner" style="height:6%;opacity:.3;"></div><div class="bar-lbl">اس</div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" style="margin:0;">
+          <div class="card-head"><span class="card-title">تراکنش‌های اخیر</span></div>
+          <table>
+            <thead>
+              <tr><th>تاریخ</th><th>شرح</th><th>مبلغ</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="color:var(--t2);font-size:11px;">۰۳/۱۵</td>
+                <td>سفارش #۱۰۰۴۷</td>
+                <td style="color:var(--red);font-weight:600;font-size:12px;">−۸۵م</td>
+              </tr>
+              <tr>
+                <td style="color:var(--t2);font-size:11px;">۰۳/۱۲</td>
+                <td>چک شماره ۰۰۴۵۶</td>
+                <td style="color:var(--green);font-weight:600;font-size:12px;">+۱۲۰م</td>
+              </tr>
+              <tr>
+                <td style="color:var(--t2);font-size:11px;">۰۳/۱۰</td>
+                <td>سفارش #۱۰۰۴۶</td>
+                <td style="color:var(--red);font-weight:600;font-size:12px;">−۱۲۰م</td>
+              </tr>
+              <tr>
+                <td style="color:var(--t2);font-size:11px;">۰۳/۰۱</td>
+                <td>پرداخت نقدی</td>
+                <td style="color:var(--green);font-weight:600;font-size:12px;">+۱۰۰م</td>
+              </tr>
+              <tr>
+                <td style="color:var(--t2);font-size:11px;">۰۲/۲۸</td>
+                <td>سفارش #۱۰۰۴۴</td>
+                <td style="color:var(--red);font-weight:600;font-size:12px;">−۱۶۵م</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── CLUB ─── -->
+    <div id="panel-club" class="panel">
+      <div class="row">
+        <span class="section-title">باشگاه مشتریان برنا</span>
+      </div>
+
+      <div class="points-row">
+        <div>
+          <div class="pts-num">۸٬۴۵۰</div>
+          <div class="pts-lbl">امتیاز فعلی شما</div>
+        </div>
+        <div class="pts-bar-wrap">
+          <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--t3);margin-bottom:6px;">
+            <span>سطح طلایی</span>
+            <span>۱٬۵۵۰ امتیاز تا الماس</span>
+          </div>
+          <div class="pts-bar-bg"><div class="pts-bar-fill"></div></div>
+          <div class="pts-bar-labels">
+            <span>۵٬۰۰۰</span>
+            <span>۱۰٬۰۰۰</span>
+          </div>
+        </div>
+        <div style="text-align:left;">
+          <div style="font-size:11px;color:var(--t3);margin-bottom:4px;">سطح عضویت</div>
+          <span class="pill amber" style="font-size:12px;padding:4px 12px;">🥇 طلایی</span>
+        </div>
+      </div>
+
+      <div class="tier-row">
+        <div class="tier-card">
+          <div class="tier-header">
+            <div class="tier-dot bronze"></div>
+            <div>
+              <div class="tier-name">برنزی</div>
+              <div class="tier-range">۰ — ۲٬۰۰۰ امتیاز</div>
+            </div>
+          </div>
+          <div style="font-size:12px;color:var(--t2);">تخفیف پایه: ۵٪<br>ارسال رایگان برای سفارش بالای ۵۰م</div>
+          <div class="tier-progress-bg"><div class="tier-progress-fill" style="width:100%;background:#CD7F32;"></div></div>
+        </div>
+        <div class="tier-card">
+          <div class="tier-header">
+            <div class="tier-dot silver"></div>
+            <div>
+              <div class="tier-name">نقره‌ای</div>
+              <div class="tier-range">۲٬۰۰۱ — ۵٬۰۰۰</div>
+            </div>
+          </div>
+          <div style="font-size:12px;color:var(--t2);">تخفیف: ۸٪<br>اولویت تأیید سفارش</div>
+          <div class="tier-progress-bg"><div class="tier-progress-fill" style="width:100%;background:#9E9E9E;"></div></div>
+        </div>
+        <div class="tier-card current">
+          <div class="tier-header">
+            <div class="tier-dot gold"></div>
+            <div>
+              <div class="tier-name" style="color:var(--indigo);">طلایی ← شما</div>
+              <div class="tier-range">۵٬۰۰۱ — ۱۰٬۰۰۰</div>
+            </div>
+          </div>
+          <div style="font-size:12px;color:var(--t2);">تخفیف: ۱۲٪<br>مدیر اختصاصی + پشتیبانی VIP</div>
+          <div class="tier-progress-bg"><div class="tier-progress-fill" style="width:68%;"></div></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <span class="card-title">تخفیف‌های فعال شما</span>
+        </div>
+        <table>
+          <thead>
+            <tr><th>محصول</th><th>تخفیف</th><th>انقضا</th><th>وضعیت</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>کیسه فریز برنا (تمام سایزها)</td>
+              <td style="font-weight:700;color:var(--green);">۱۵٪</td>
+              <td style="color:var(--t2);">۱۴۰۴/۰۶/۳۱</td>
+              <td><span class="pill green"><span class="pill-dot"></span>فعال</span></td>
+            </tr>
+            <tr>
+              <td>سفره یکبارمصرف</td>
+              <td style="font-weight:700;color:var(--green);">۱۰٪</td>
+              <td style="color:var(--t2);">۱۴۰۴/۰۶/۳۱</td>
+              <td><span class="pill green"><span class="pill-dot"></span>فعال</span></td>
+            </tr>
+            <tr>
+              <td>کیسه زباله ستاره‌ای</td>
+              <td style="font-weight:700;color:var(--green);">۱۲٪</td>
+              <td style="color:var(--t2);">۱۴۰۴/۰۴/۳۱</td>
+              <td><span class="pill indigo"><span class="pill-dot"></span>به‌زودی</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ─── INVOICES ─── -->
+    <div id="panel-invoices" class="panel">
+      <div class="row">
+        <span class="section-title">فاکتورها</span>
+        <button class="tb-btn">دانلود همه (PDF)</button>
+      </div>
+
+      <div class="inv-metrics">
+        <div class="metric">
+          <div class="metric-label">کل فاکتورها</div>
+          <div class="metric-value">۱۴۷</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">تسویه شده</div>
+          <div class="metric-value">۱۳۹</div>
+          <div class="metric-sub up">نرخ ۹۴.۵٪</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">در انتظار تسویه</div>
+          <div class="metric-value">۸</div>
+          <div class="metric-sub muted">جمعاً ۳۸۰م تومان</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <span class="card-title">لیست فاکتورها</span>
+          <input class="search-box" placeholder="جستجو..." style="width:160px;" />
+        </div>
+        <table>
+          <thead>
+            <tr><th>شماره</th><th>تاریخ</th><th>سفارش</th><th>مبلغ</th><th>وضعیت</th><th>عملیات</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span style="font-family:monospace;font-size:11px;">INV-۲۰۴۷</span></td>
+              <td style="color:var(--t2);">۱۴۰۴/۰۳/۱۰</td>
+              <td style="color:var(--t2);">#۱۰۰۴۶</td>
+              <td style="font-weight:600;">۱۲۰٫۵۰۰٫۰۰۰</td>
+              <td><span class="pill green"><span class="pill-dot"></span>تسویه شده</span></td>
+              <td><button class="mini-btn">PDF</button></td>
+            </tr>
+            <tr>
+              <td><span style="font-family:monospace;font-size:11px;">INV-۲۰۴۶</span></td>
+              <td style="color:var(--t2);">۱۴۰۴/۰۳/۰۵</td>
+              <td style="color:var(--t2);">#۱۰۰۴۵</td>
+              <td style="font-weight:600;">۴۵٫۰۰۰٫۰۰۰</td>
+              <td><span class="pill green"><span class="pill-dot"></span>تسویه شده</span></td>
+              <td><button class="mini-btn">PDF</button></td>
+            </tr>
+            <tr>
+              <td><span style="font-family:monospace;font-size:11px;">INV-۲۰۴۵</span></td>
+              <td style="color:var(--t2);">۱۴۰۴/۰۲/۲۸</td>
+              <td style="color:var(--t2);">#۱۰۰۴۴</td>
+              <td style="font-weight:600;">۱۶۵٫۰۰۰٫۰۰۰</td>
+              <td><span class="pill green"><span class="pill-dot"></span>تسویه شده</span></td>
+              <td><button class="mini-btn">PDF</button></td>
+            </tr>
+            <tr>
+              <td><span style="font-family:monospace;font-size:11px;">INV-۲۰۴۴</span></td>
+              <td style="color:var(--t2);">۱۴۰۴/۰۲/۲۰</td>
+              <td style="color:var(--t2);">#۱۰۰۴۳</td>
+              <td style="font-weight:600;">۳۲٫۰۰۰٫۰۰۰</td>
+              <td><span class="pill amber"><span class="pill-dot"></span>در انتظار</span></td>
+              <td><button class="mini-btn accent">پرداخت</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ─── PRODUCTS ─── -->
+    <div id="panel-products" class="panel">
+      <div class="row">
+        <span class="section-title">کاتالوگ محصولات</span>
+        <div style="display:flex;gap:8px;">
+          <input class="search-box" placeholder="جستجوی محصول..." />
+          <button class="tb-btn primary">ثبت سفارش جدید</button>
+        </div>
+      </div>
+
+      <div class="product-grid">
+        <div class="product-card">
+          <div class="product-thumb">🧊</div>
+          <div class="product-body">
+            <div class="product-name">کیسه فریز — سایز بزرگ</div>
+            <div class="product-code">BRN-FRZ-L</div>
+            <div class="product-foot">
+              <div class="product-price">۱۷۰٫۰۰۰ ت</div>
+              <span class="pill green" style="font-size:10px;">موجود</span>
+            </div>
+          </div>
+        </div>
+        <div class="product-card">
+          <div class="product-thumb">🛍️</div>
+          <div class="product-body">
+            <div class="product-name">کیسه فریز — سایز متوسط</div>
+            <div class="product-code">BRN-FRZ-M</div>
+            <div class="product-foot">
+              <div class="product-price">۱۳۰٫۰۰۰ ت</div>
+              <span class="pill green" style="font-size:10px;">موجود</span>
+            </div>
+          </div>
+        </div>
+        <div class="product-card">
+          <div class="product-thumb">🗑️</div>
+          <div class="product-body">
+            <div class="product-name">کیسه زباله ستاره‌ای ۵۰L</div>
+            <div class="product-code">BRN-TRS-50</div>
+            <div class="product-foot">
+              <div class="product-price">۲۱۰٫۰۰۰ ت</div>
+              <span class="pill green" style="font-size:10px;">موجود</span>
+            </div>
+          </div>
+        </div>
+        <div class="product-card">
+          <div class="product-thumb">🍽️</div>
+          <div class="product-body">
+            <div class="product-name">سفره یکبارمصرف ۱۲۰×۱۸۰</div>
+            <div class="product-code">BRN-TBL-120</div>
+            <div class="product-foot">
+              <div class="product-price">۹۵٫۰۰۰ ت</div>
+              <span class="pill green" style="font-size:10px;">موجود</span>
+            </div>
+          </div>
+        </div>
+        <div class="product-card">
+          <div class="product-thumb">📦</div>
+          <div class="product-body">
+            <div class="product-name">کیسه زباله ستاره‌ای ۱۰۰L</div>
+            <div class="product-code">BRN-TRS-100</div>
+            <div class="product-foot">
+              <div class="product-price">۳۸۰٫۰۰۰ ت</div>
+              <span class="pill amber" style="font-size:10px;">محدود</span>
+            </div>
+          </div>
+        </div>
+        <div class="product-card">
+          <div class="product-thumb">🌿</div>
+          <div class="product-body">
+            <div class="product-name">نایلون تازه‌نگهدار برنا</div>
+            <div class="product-code">BRN-CLG-01</div>
+            <div class="product-foot">
+              <div class="product-price">۶۵٫۰۰۰ ت</div>
+              <span class="pill green" style="font-size:10px;">موجود</span>
+            </div>
+          </div>
+        </div>
+        <div class="product-card">
+          <div class="product-thumb">💧</div>
+          <div class="product-body">
+            <div class="product-name">کیسه فریز ضخیم ویژه XL</div>
+            <div class="product-code">BRN-FRZ-XL</div>
+            <div class="product-foot">
+              <div class="product-price">۲۴۰٫۰۰۰ ت</div>
+              <span class="pill gray" style="font-size:10px;">ناموجود</span>
+            </div>
+          </div>
+        </div>
+        <div class="product-card">
+          <div class="product-thumb">🏷️</div>
+          <div class="product-body">
+            <div class="product-name">سفره یکبارمصرف ۱۰۰×۱۴۰</div>
+            <div class="product-code">BRN-TBL-100</div>
+            <div class="product-foot">
+              <div class="product-price">۷۲٫۰۰۰ ت</div>
+              <span class="pill green" style="font-size:10px;">موجود</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  const titles = {
+    orders:'سفارشات', finance:'مالی',
+    club:'باشگاه مشتریان', invoices:'فاکتورها', products:'محصولات'
+  };
+  function show(id, el) {
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    document.getElementById('panel-' + id).classList.add('active');
+    el.classList.add('active');
+    document.getElementById('page-title').textContent = titles[id];
+  }
+</script>
+</body>
+</html>
