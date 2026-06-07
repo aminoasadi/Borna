@@ -34,12 +34,8 @@ export function Header() {
       )}
     >
       <div dir="rtl" className="container relative mx-auto flex h-full items-center px-6">
-        <Link href="/" className="relative z-10 flex shrink-0 items-center gap-2.5">
-          <Image src="/logo.svg" alt="برنا پلاستیک" width={36} height={36} />
-          <div>
-            <div className="text-sm font-bold leading-tight text-slate-900">برنا پلاستیک</div>
-            <div className="text-[10px] leading-tight text-slate-500">پورتال بنکداران</div>
-          </div>
+        <Link href="/" className="relative z-10 flex shrink-0 items-center">
+          <Image src="/borna-plastic-logo.png" alt="برنا پلاستیک" width={150} height={29} />
         </Link>
 
         <nav className="pointer-events-none absolute inset-x-0 hidden items-center justify-center md:flex">

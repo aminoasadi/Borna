@@ -6,10 +6,10 @@
 
 @theme {
   /* Brand colors */
-  --color-brand-primary: #1B4F72;
-  --color-brand-light: #2E86C1;
-  --color-brand-accent: #1E8449;
-  --color-brand-accent-light: #27AE60;
+  --color-brand-primary: #2563eb;
+  --color-brand-light: #3b82f6;
+  --color-brand-accent: #2563eb;
+  --color-brand-accent-light: #60a5fa;
   --color-brand-bg: #F8FAFB;
 
   /* Font */

@@ -59,7 +59,7 @@ export function HeroSection() {
           >
             پورتال هوشمند
             <br />
-            <span className="text-brand-primary">بنکداران برنا</span>
+            <span className="text-brand-primary">مشتریــان بــرنا</span>
           </motion.h1>
 
           {/* Description */}

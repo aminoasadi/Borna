@@ -89,7 +89,7 @@ export function ContactForm() {
   const labelClass = "block text-sm font-medium text-slate-700 mb-1";
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-5" noValidate>
+    <form onSubmit={handleSubmit} className="space-y-5" dir="rtl" noValidate>
       <div>
         <label className={labelClass}>نام و نام خانوادگی <span className="text-red-500">*</span></label>
         <input

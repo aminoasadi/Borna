@@ -192,7 +192,7 @@ function FeatureCard({ feature }: { feature: Feature }) {
 
 export function FeaturesSection() {
   return (
-    <section className="bg-background py-24">
+    <section className="bg-background py-24" dir="rtl">
       <div className="container mx-auto px-6">
         <motion.div
           variants={fadeUp}

@@ -1,5 +1,46 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36">
-  <rect width="36" height="36" rx="8" fill="#1B4F72"/>
-  <path d="M8 26V14l10-6 10 6v12l-10 5-10-5z" fill="none" stroke="#27AE60" stroke-width="2" stroke-linejoin="round"/>
-  <circle cx="18" cy="18" r="3" fill="white"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 106">
+  <defs>
+    <clipPath id="bBowl">
+      <rect x="34" y="44" width="52" height="58"/>
+    </clipPath>
+    <clipPath id="pBowl">
+      <rect x="106" y="14" width="52" height="58"/>
+    </clipPath>
+  </defs>
+
+  <!-- "b" stem -->
+  <rect x="8" y="14" width="26" height="82" rx="13" fill="#1a2b5e"/>
+  <!-- "b" bowl (clipped to right of stem) -->
+  <g clip-path="url(#bBowl)">
+    <circle cx="46" cy="72" r="26" fill="#1a2b5e"/>
+    <circle cx="46" cy="72" r="15" fill="white"/>
+  </g>
+
+  <!-- "p" stem -->
+  <rect x="80" y="14" width="26" height="82" rx="13" fill="#1a2b5e"/>
+  <!-- "p" bowl (clipped to right of stem) -->
+  <g clip-path="url(#pBowl)">
+    <circle cx="118" cy="44" r="26" fill="#1a2b5e"/>
+    <circle cx="118" cy="44" r="15" fill="white"/>
+  </g>
+
+  <!-- Lime accent dots -->
+  <circle cx="12" cy="12" r="11" fill="#2563eb"/>
+  <circle cx="132" cy="56" r="11" fill="#2563eb"/>
+  <circle cx="62" cy="97" r="11" fill="#2563eb"/>
+
+  <!-- Divider -->
+  <line x1="162" y1="10" x2="162" y2="96" stroke="#cbd5e1" stroke-width="1.5"/>
+
+  <!-- Persian brand name -->
+  <text x="548" y="52"
+    font-family="Tahoma,'Arial Unicode MS',Arial,sans-serif"
+    font-size="34" font-weight="700" fill="#1a2b5e"
+    text-anchor="end" direction="rtl">برنا پلاستیک</text>
+
+  <!-- English brand name -->
+  <text x="548" y="88"
+    font-family="Arial,'Helvetica Neue',Helvetica,sans-serif"
+    font-size="22" fill="#1a2b5e"
+    text-anchor="end" letter-spacing="2">borna plastic</text>
 </svg>

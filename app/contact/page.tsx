@@ -12,12 +12,12 @@ const contactInfo = [
   {
     icon: MapPin,
     label: "آدرس",
-    value: "تهران، خیابان ولیعصر، پلاک ۱۲۳، طبقه ۴",
+    value: "اصفهان، شهرک صنعتی جی، خیابان پنجم، کارخانه برنا پلاستیک",
   },
   {
     icon: Phone,
     label: "تلفن",
-    value: "۰۲۱-۸۸۱۲۳۴۵۶",
+    value: "۰۹۱۲۲۰۴۰۲۳۰",
   },
   {
     icon: Mail,
@@ -35,7 +35,7 @@ export default function ContactPage() {
   return (
     <>
       <Header />
-      <main>
+      <main dir="rtl">
         {/* Hero */}
         <section className="pt-24 pb-12 bg-gradient-to-b from-slate-50 to-white border-b border-slate-100">
           <div className="container mx-auto px-6 text-center">
@@ -50,13 +50,7 @@ export default function ContactPage() {
         <section className="py-16 bg-white">
           <div className="container mx-auto px-6">
             <div className="grid md:grid-cols-2 gap-12 max-w-4xl mx-auto">
-              {/* Form col */}
-              <div>
-                <h2 className="text-xl font-bold text-slate-900 mb-6">پیام بفرستید</h2>
-                <ContactForm />
-              </div>
-
-              {/* Info col */}
+              {/* Info col — right side in RTL */}
               <div>
                 <h2 className="text-xl font-bold text-slate-900 mb-6">اطلاعات تماس</h2>
                 <div className="space-y-5 mb-8">
@@ -80,6 +74,12 @@ export default function ContactPage() {
                     <p className="text-slate-400 text-sm">نقشه موقعیت مکانی</p>
                   </div>
                 </div>
+              </div>
+
+              {/* Form col — left side in RTL */}
+              <div>
+                <h2 className="text-xl font-bold text-slate-900 mb-6">پیام بفرستید</h2>
+                <ContactForm />
               </div>
             </div>
           </div>

@@ -1,7 +1,7 @@
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
-import { FeatureDetail } from "@/components/features/FeatureDetail";
-import { features } from "@/lib/features-data";
+import { DashboardMockup } from "@/components/home/DashboardMockup";
+import { FeatureTextList } from "@/components/features/FeatureTextList";
 
 export const metadata = {
   title: "امکانات | برنا پلاستیک",
@@ -12,8 +12,8 @@ export default function FeaturesPage() {
   return (
     <>
       <Header />
-      <main>
-        {/* Small hero */}
+      <main dir="rtl">
+        {/* Hero */}
         <section className="pt-24 pb-12 bg-gradient-to-b from-slate-50 to-white border-b border-slate-100">
           <div className="container mx-auto px-6 text-center">
             <h1 className="text-3xl lg:text-4xl font-extrabold text-slate-900 mb-3">
@@ -25,11 +25,19 @@ export default function FeaturesPage() {
           </div>
         </section>
 
-        {/* Feature details */}
+        {/* Sticky scroll layout */}
         <div className="bg-white">
-          {features.map((feature, index) => (
-            <FeatureDetail key={feature.id} feature={feature} index={index} />
-          ))}
+          <div className="container mx-auto px-6">
+            <div className="flex gap-12 items-start">
+              {/* Scrollable text */}
+              <FeatureTextList />
+
+              {/* Sticky mockup — desktop only */}
+              <div className="hidden lg:block w-[600px] shrink-0 sticky top-24 py-16">
+                <DashboardMockup />
+              </div>
+            </div>
+          </div>
         </div>
       </main>
       <Footer />

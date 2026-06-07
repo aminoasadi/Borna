@@ -24,7 +24,7 @@ export function FeatureDetail({ feature, index }: FeatureDetailProps) {
     >
       <div className={`container mx-auto px-6 grid md:grid-cols-2 gap-12 items-center ${isEven ? "" : "md:[direction:ltr]"}`}>
         {/* Text side */}
-        <motion.div variants={fadeUp} className={isEven ? "" : "md:[direction:rtl]"}>
+        <motion.div variants={fadeUp} dir="rtl" className={isEven ? "" : "md:[direction:rtl]"}>
           <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-brand-primary/10 text-brand-primary mb-5">
             {feature.icon}
           </div>

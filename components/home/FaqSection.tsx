@@ -39,7 +39,7 @@ const faqs = [
 
 export function FaqSection() {
   return (
-    <section id="faq" className="py-24 bg-white">
+    <section id="faq" className="py-24 bg-white" dir="rtl">
       <div className="container mx-auto px-6 max-w-3xl">
         <motion.div
           variants={fadeUp}
