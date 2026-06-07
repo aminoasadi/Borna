@@ -69,7 +69,7 @@ export function StatsSection() {
   const inView = useInView(ref, { once: true, margin: "-80px" });
 
   return (
-    <section className="py-20 bg-white border-y border-slate-100" ref={ref}>
+    <section className="bg-white py-20" ref={ref}>
       <div className="container mx-auto px-6">
         <motion.div
           variants={staggerContainer}

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Vazirmatn } from "next/font/google";
+import { SiteFrame } from "@/components/layout/SiteFrame";
 import "./globals.css";
 
 const vazirmatn = Vazirmatn({
@@ -22,7 +23,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="fa" dir="rtl" className={vazirmatn.variable}>
-      <body className="font-sans antialiased">{children}</body>
+      <body className="font-sans antialiased">
+        <SiteFrame>{children}</SiteFrame>
+      </body>
     </html>
   );
 }

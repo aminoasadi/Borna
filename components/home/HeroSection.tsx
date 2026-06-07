@@ -8,19 +8,17 @@ import { fadeUp, staggerContainer } from "@/lib/animations";
 
 export function HeroSection() {
   return (
-    <section className="relative overflow-hidden bg-background pt-[120px] pb-[120px]">
+    <section className="relative overflow-hidden bg-background pb-[120px] pt-[120px]">
       {/* Grid pattern */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 opacity-[0.35]"
+        className="bg-flow-grid pointer-events-none absolute inset-0"
         style={{
-          backgroundImage: `
-            linear-gradient(to right, color-mix(in oklch, var(--border) 60%, transparent) 1px, transparent 1px),
-            linear-gradient(to bottom, color-mix(in oklch, var(--border) 60%, transparent) 1px, transparent 1px)
-          `,
-          backgroundSize: "72px 72px",
+          opacity: 0.28,
+          WebkitMaskImage:
+            "linear-gradient(to bottom, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.45) 45%, transparent 90%)",
           maskImage:
-            "radial-gradient(ellipse 90% 70% at 50% 0%, black 20%, transparent 75%)",
+            "linear-gradient(to bottom, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.45) 45%, transparent 90%)",
         }}
       />
 

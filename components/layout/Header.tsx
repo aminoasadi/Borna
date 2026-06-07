@@ -33,36 +33,35 @@ export function Header() {
           : "bg-transparent"
       )}
     >
-      <div className="container mx-auto px-6 h-full flex items-center justify-between">
-        {/* Logo — right side in RTL */}
-        <Link href="/" className="flex items-center gap-2.5 shrink-0">
+      <div dir="rtl" className="container relative mx-auto flex h-full items-center px-6">
+        <Link href="/" className="relative z-10 flex shrink-0 items-center gap-2.5">
           <Image src="/logo.svg" alt="برنا پلاستیک" width={36} height={36} />
           <div>
-            <div className="text-sm font-bold text-slate-900 leading-tight">برنا پلاستیک</div>
-            <div className="text-[10px] text-slate-500 leading-tight">پورتال بنکداران</div>
+            <div className="text-sm font-bold leading-tight text-slate-900">برنا پلاستیک</div>
+            <div className="text-[10px] leading-tight text-slate-500">پورتال بنکداران</div>
           </div>
         </Link>
 
-        {/* Desktop Nav */}
-        <nav className="hidden md:flex items-center gap-1">
-          {navLinks.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="px-4 py-2 text-sm font-medium text-slate-600 hover:text-brand-primary rounded-lg hover:bg-slate-50 transition-colors"
-            >
-              {link.label}
-            </Link>
-          ))}
+        <nav className="pointer-events-none absolute inset-x-0 hidden items-center justify-center md:flex">
+          <div className="pointer-events-auto flex items-center gap-1">
+            {navLinks.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="rounded-lg px-4 py-2 text-sm font-medium text-slate-600 transition-colors hover:bg-slate-50 hover:text-brand-primary"
+              >
+                {link.label}
+              </Link>
+            ))}
+          </div>
         </nav>
 
-        {/* CTA + mobile */}
-        <div className="flex items-center gap-3">
+        <div className="relative z-10 ms-auto flex items-center gap-3">
           <Button
             render={<Link href="#" />}
             variant="outline"
             size="sm"
-            className="hidden md:inline-flex border-brand-primary text-brand-primary hover:bg-brand-primary hover:text-white transition-colors"
+            className="hidden border-brand-primary text-brand-primary transition-colors hover:bg-brand-primary hover:text-white md:inline-flex"
           >
             ورود به پورتال
           </Button>
@@ -82,12 +81,12 @@ export function Header() {
                     key={link.href}
                     href={link.href}
                     onClick={() => setOpen(false)}
-                    className="px-4 py-3 text-base font-medium text-slate-700 hover:bg-slate-50 rounded-lg"
+                    className="rounded-lg px-4 py-3 text-base font-medium text-slate-700 hover:bg-slate-50"
                   >
                     {link.label}
                   </Link>
                 ))}
-                <div className="pt-4 border-t mt-2">
+                <div className="mt-2 border-t pt-4">
                   <Button
                     render={<Link href="#" />}
                     className="w-full bg-brand-primary hover:bg-brand-light"

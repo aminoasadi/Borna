@@ -28,12 +28,76 @@
     @apply border-border outline-ring/50;
   }
   body {
-    background-color: theme(colors.slate.50);
     color: theme(colors.slate.900);
     @apply bg-background text-foreground;
   }
   html {
     @apply font-sans;
+  }
+}
+
+/* Flow-style site frame — outside @layer so styles always apply */
+.site-shell {
+  position: relative;
+  min-height: 100dvh;
+  width: 100%;
+  background-color: var(--background);
+}
+
+.site-shell-side {
+  display: none;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  z-index: 0;
+  width: min(200px, max(0px, calc((100vw - 1320px) / 2)));
+  pointer-events: none;
+  background-color: var(--background);
+  background-image: repeating-linear-gradient(
+    -45deg,
+    var(--background) 0,
+    var(--background) 12px,
+    rgb(0 0 0 / 0.028) 12px,
+    rgb(0 0 0 / 0.028) 13px
+  );
+}
+
+.site-shell-side-start {
+  left: 0;
+}
+
+.site-shell-side-end {
+  right: 0;
+}
+
+.site-shell-main {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 1320px;
+  min-height: 100dvh;
+  margin-inline: auto;
+  background-color: var(--background);
+  border-inline: 1px solid #d5dbe3;
+  box-shadow:
+    inset 0 1px 0 0 rgb(255 255 255 / 0.85),
+    0 0 0 1px rgb(213 219 227 / 0.45);
+}
+
+.site-shell-main > main > section + section {
+  border-top: 1px solid var(--border);
+}
+
+.bg-flow-grid {
+  background-image:
+    linear-gradient(to right, rgb(213 219 227 / 0.35) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(213 219 227 / 0.35) 1px, transparent 1px);
+  background-size: 56px 56px;
+}
+
+@media (min-width: 768px) {
+  .site-shell-side {
+    display: block;
   }
 }
 
