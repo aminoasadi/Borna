@@ -54,7 +54,7 @@ export function Header() {
 
         <div className="relative z-10 ms-auto flex items-center gap-3">
           <Button
-            render={<Link href="#" />}
+            render={<Link href="https://www.bornapp.shop/login" target="_blank" rel="noopener noreferrer" />}
             variant="outline"
             size="sm"
             className="hidden border-brand-primary text-brand-primary transition-colors hover:bg-brand-primary hover:text-white md:inline-flex"
@@ -84,7 +84,7 @@ export function Header() {
                 ))}
                 <div className="mt-2 border-t pt-4">
                   <Button
-                    render={<Link href="#" />}
+                    render={<Link href="https://www.bornapp.shop/login" target="_blank" rel="noopener noreferrer" />}
                     className="w-full bg-brand-primary hover:bg-brand-light"
                   >
                     ورود به پورتال
